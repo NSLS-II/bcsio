@@ -34,3 +34,52 @@ character hex string.  Use this to get your token ::
 
 
 Treat the *consumer_key*, *consumer_secret*, and *token* as you would a password.
+
+
+Usage
+-----
+
+Example usage ::
+
+  import aiohttp
+  import asyncio
+  from bcsio.aiohttp import BaseCampAPI
+
+  app_name = 'dama-helper (https://nsls-ii.github.io)'
+  account = '3733838'
+  oath_token = token['access_token']
+
+  async def get_projects():
+      async with aiohttp.ClientSession() as session:
+          gh = BaseCampAPI(session, app_name, oath_token, account)
+          data = []
+          async for d in gh.getiter("projects.json"):
+              data.append(d)
+      return data
+
+  async def top_get(end_point):
+      if not end_point.endswith('.json'):
+          ep = f"{end_point}.json"
+      else:
+          ep = end_point
+      async with aiohttp.ClientSession() as session:
+          gh = BaseCampAPI(session, app_name, oath_token, account)
+          data = await gh.getitem(ep)
+      return data
+
+  async def top_post(end_point, data):
+      if not end_point.endswith('.json'):
+          ep = f"{end_point}.json"
+      else:
+          ep = end_point
+      async with aiohttp.ClientSession() as session:
+          gh = BaseCampAPI(session, app_name, oath_token, account)
+          data = await gh.post(ep, data=data)
+      return data
+
+  async def get_people_from_bc(proj_id):
+      ep = f'projects/{proj_id}/people'
+      return await top_get(ep)
+
+  loop = asyncio.get_event_loo()
+  projs = loop.run_until_complete(get_projects())
