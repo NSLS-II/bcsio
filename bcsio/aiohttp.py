@@ -8,9 +8,10 @@ from . import abc as bc_abc
 class BaseCampAPI(bc_abc.BaseCampAPI):
 
     def __init__(self, session: aiohttp.ClientSession, requester: str,
-                 oauth_token: str, account: str) -> None:
+                 oauth_token: str, account: str, cache=None) -> None:
         self._session = session
-        super().__init__(requester, oauth_token=oauth_token, account=account)
+        super().__init__(requester, oauth_token=oauth_token, account=account,
+                         cache=cache)
 
     async def _request(self, method: str, url: str, headers: Mapping,
                        body: bytes = b'') -> Tuple[int, Mapping, bytes]:
