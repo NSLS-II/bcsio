@@ -14,7 +14,6 @@ class BaseCampAPI(bc_abc.BaseCampAPI):
 
     async def _request(self, method: str, url: str, headers: Mapping,
                        body: bytes = b'') -> Tuple[int, Mapping, bytes]:
-        print(method, url, headers, body)
         async with self._session.request(method, url, headers=headers,
                                          data=body) as response:
             return response.status, response.headers, await response.read()

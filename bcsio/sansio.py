@@ -77,9 +77,7 @@ def format_url(url: str, url_vars: Mapping[str, Any]) -> str:
     """
     # Works even if 'url' is fully-qualified.
     url = urllib.parse.urljoin(DOMAIN, url)
-    print(url)
     expanded_url: str = uritemplate.expand(url, var_dict=url_vars)
-    print(expanded_url)
     return expanded_url
 
 
