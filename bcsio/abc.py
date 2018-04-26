@@ -63,6 +63,12 @@ class BaseCampAPI(abc.ABC):
             self.rate_limit.remaining -= 1
         response = await self._request(method, filled_url,
                                        request_headers, body)
+        if response[0] == 429:
+            sleep_time = int(response[1]['Retry-After']) + 1
+            print(f'Hit rate limit, backing off for {sleep_time}')
+            await self.sleep(sleep_time)
+            return await self._make_request(method, url, url_vars, data)
+
         if not (response[0] == 304 and cached):
             data, self.rate_limit, more = sansio.decipher_response(*response)
             has_cache_details = ("etag" in response[1]
