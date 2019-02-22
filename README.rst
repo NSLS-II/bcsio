@@ -81,5 +81,5 @@ Example usage ::
       ep = f'projects/{proj_id}/people'
       return await top_get(ep)
 
-  loop = asyncio.get_event_loo()
+  loop = asyncio.get_event_loop()
   projs = loop.run_until_complete(get_projects())
